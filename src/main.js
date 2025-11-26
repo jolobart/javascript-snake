@@ -1,34 +1,34 @@
 import { k } from "./kaboomLoader.js";
 
 const SPEED = 400;
-const BULLET_SPEED = 600;
+const BULLET_SPEED = 300;
 
 const player = k.add([
 	k.sprite("snake"), 
+	k.scale(.5),
 	k.pos(k.center())     
 ]);
 
-console.log(  );
+function spawnPoison() {
+	const start = k.vec2(player.pos);
+    const target = k.mousePos();
 
-const poison = k.add([
-	, 
-	k.pos(player.pos.x + 200, player.pos.y + 100)     
-]);
+    const dir = target.sub(start).unit();
+    let angle = dir.angle();
+	angle += 90;
 
-function spawnPoison(px, py) {
 	k.add([
         k.sprite("poison"),
-		k.area(),
-		k.pos(px, py),
-		k.anchor("center"),
-		k.move(k.UP, BULLET_SPEED),
-		k.offscreen({ destroy: true }),
-		"bullet"
+		k.scale(.4),
+		k.pos(start),
+        k.move(dir, BULLET_SPEED),
+		k.rotate(angle), 
+        "poison"
 	]);
-}
+};
 
-k.onKeyPress("space", () => {
-	spawnPoison(player.pos.x + 50, player.pos.y);
+k.onClick(() => {
+	spawnPoison();
 });
 
 
